@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+
 class ProjectDetails extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +17,10 @@ class ProjectDetails extends Component {
   }
   render() {
     const { getAppProjects } = this.state;
+    const { isLogin } = this.props;
+    if (!isLogin) {
+      return <Redirect to="/signin" />;
+    }
     return (
       <div className="container section project-details">
         {getAppProjects ? (
@@ -40,7 +46,8 @@ class ProjectDetails extends Component {
 
 const mapStateToProps = state => {
   return {
-    getAllProjects: state.project.getProjects
+    getAllProjects: state.project.getProjects,
+    isLogin: state.auth.login
   };
 };
 

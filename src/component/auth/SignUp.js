@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { signUp } from "../../redux/store/actions/auth";
 
 class SignUp extends Component {
   constructor(props) {
@@ -22,9 +25,14 @@ class SignUp extends Component {
   handleSubmit = e => {
     e.preventDefault();
     console.log("TCL: SignUp ->  e", this.state);
+    this.props.signUp(this.state);
   };
 
   render() {
+    const { isLogin } = this.props;
+    if (isLogin) {
+      return <Redirect to="/" />;
+    }
     return (
       <div className="container">
         <form onSubmit={e => this.handleSubmit(e)} className="white">
@@ -70,4 +78,12 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+const mapStateToProps = state => {
+  return {
+    isLogin: state.auth.login
+  };
+};
+const mapDispatchToProps = {
+  signUp
+};
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

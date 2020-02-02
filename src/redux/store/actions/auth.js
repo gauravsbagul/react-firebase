@@ -10,10 +10,10 @@ export const signIn = credentials => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(querySnapshot => {
-        console.log("TCL: querySnapshot ", querySnapshot.docs);
+        console.log("TCL: querySnapshot ", querySnapshot);
         dispatch({
           type: "LOGIN_SUCCESS",
-          payload: querySnapshot.docs
+          payload: querySnapshot
         });
       })
       .catch(error => {
@@ -37,8 +37,40 @@ export const signout = () => {
       .then(response => {
         console.log("TCL: signout -> response", response);
         dispatch({
-          type: "SIGNOUT",
-          payload: "true"
+          type: "LOGIN_SUCCESS",
+          payload: null
+        });
+      });
+  };
+};
+
+export const signUp = newUser => {
+  return (dispatch, getState) => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(newUser.email, newUser.password)
+      .then(response => {
+        console.log("TCL: response", response);
+        return firestore
+          .collection("users")
+          .doc(response.user.uid)
+          .set({
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            initials: newUser.firstName[0] + newUser.lastName[0]
+          });
+      })
+      .then(() => {
+        dispatch({
+          type: "SIGN_UP",
+          payload: true
+        });
+      })
+      .catch(err => {
+        console.log("TCL signUp: err", err);
+        dispatch({
+          type: "SIGN_UP",
+          payload: false
         });
       });
   };
