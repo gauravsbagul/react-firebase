@@ -7,38 +7,55 @@ class ProjectDetails extends Component {
     super(props);
     this.state = {
       loading: false,
-      getAppProjects: null
+      getAppProjects: null,
+      currentProject: null
     };
   }
   static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(
+      "TCL: ProjectDetails -> getDerivedStateFromProps -> nextProps",
+      nextProps
+    );
     let newState = prevState;
-    newState.getAppProjects = nextProps.getAllProjects;
+    if (nextProps.getAllProjects) {
+      newState.getAppProjects = nextProps.getAllProjects;
+      if (
+        nextProps.match &&
+        nextProps.match.params &&
+        nextProps.match.params.id
+      )
+        newState.currentProject =
+          nextProps.getAllProjects[nextProps.match.params.id];
+    }
+
     return newState === prevState ? prevState : newState;
   }
   render() {
-    const { getAppProjects } = this.state;
+    const { getAppProjects, currentProject } = this.state;
     const { isLogin } = this.props;
     if (!isLogin) {
       return <Redirect to="/signin" />;
     }
+    console.log(
+      "TCL: ProjectDetails -> render -> currentProject",
+      currentProject
+    );
     return (
       <div className="container section project-details">
-        {getAppProjects ? (
+        {currentProject ? (
           <div className="card z-depth-0">
             <div className="card-content">
-              <span className="card-title">{getAppProjects.title}</span>
-              <p>{getAppProjects.content}</p>
+              <span className="card-title">{currentProject.title}</span>
+              <p>{currentProject.content}</p>
             </div>
             <div className="card-action gret lighten-4 green-text">
               <div>
-                Posted by {getAppProjects.firstName} {getAppProjects.lastName}
+                Posted by {currentProject.firstName} {currentProject.lastName}
               </div>
               <div></div>
             </div>
           </div>
-        ) : (
-          <div>1st feb 3pm</div>
-        )}
+        ) : null}
       </div>
     );
   }

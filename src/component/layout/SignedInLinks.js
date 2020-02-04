@@ -3,6 +3,10 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { signout } from "../../redux/store/actions/auth";
 const SignedInLinks = props => {
+  console.log("TCL: SignedInLinks props", props);
+  const { login } = props;
+  const initials = "GB";
+
   return (
     <ul className="right">
       <li>
@@ -13,7 +17,7 @@ const SignedInLinks = props => {
       </li>
       <li>
         <NavLink to="/" className="btn btn-floating pink lighten-1">
-          GB
+          {initials}
         </NavLink>
       </li>
     </ul>
