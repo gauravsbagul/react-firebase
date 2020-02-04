@@ -5,6 +5,7 @@ import { getProjects } from '../../redux/store/actions/project';
 import { connect } from 'react-redux';
 import { getCurrentUser } from '../../redux/store/actions/auth';
 import { firestoreConnect } from 'react-redux-firebase';
+import { getAllNotifications } from '../../redux/store/actions/notification';
 import { compose } from 'redux';
 import { Redirect } from 'react-router-dom';
 class Dashboard extends Component {
@@ -25,6 +26,7 @@ class Dashboard extends Component {
 	componentDidMount() {
 		this.props.getProjects();
 		this.props.getCurrentUser();
+		this.props.getAllNotifications()
 	}
 	render() {
 		const { projects } = this.state;
@@ -48,12 +50,14 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
 	return {
 		getAllProjects: state.project.getProjects,
-		isLogin: state.auth.login
+		isLogin: state.auth.login,
+		notification: state.notification.notificationReducer
 	};
 };
 
 const mapDispatchToProps = {
 	getProjects,
-	getCurrentUser
+	getCurrentUser,
+	getAllNotifications
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
