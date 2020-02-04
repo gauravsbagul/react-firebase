@@ -2,8 +2,18 @@ import React from "react";
 
 const Notifications = props => {
   return (
-    <div>
-      <p>Notifications</p>
+    <div className="secction">
+      <div className="card z-depth-0">
+        <div className="card-content">
+          <span className='card-title'>Notifications</span>
+          <ul className='notifications'>
+            <li>Notifications</li>
+            <li>Notifications</li>
+            <li>Notifications</li>
+            <li>Notifications</li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };
