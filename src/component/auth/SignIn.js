@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signIn } from "../../redux/store/actions/auth";
+import { Redirect } from "react-router-dom";
 
 class SignIn extends Component {
   constructor(props) {
@@ -32,7 +33,10 @@ class SignIn extends Component {
   };
 
   render() {
-    const { authError } = this.props;
+    const { isLogin, authError } = this.props;
+    if (isLogin) {
+      return <Redirect to="/" />;
+    }
     return (
       <div className="container">
         <form onSubmit={e => this.handleSubmit(e)} className="white">
@@ -66,7 +70,7 @@ class SignIn extends Component {
 }
 const mapStateToProps = state => {
   return {
-    login: state.auth.login,
+    isLogin: state.auth.login,
     authError: state.auth.authError
   };
 };

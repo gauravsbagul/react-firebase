@@ -6,11 +6,13 @@ const ProjectList = ({ projects }) => {
   console.log("TCL: ProjectList projects", projects);
   return (
     <div className="project-list section">
-      {projects ? (
-        <Link to={`/project/${projects.id}`}>
-          <ProjectSummary project={projects} />
-        </Link>
-      ) : null}
+      {projects.map((project, index) => {
+        return (
+          <Link to={`/project/${project.id}`} key={index}>
+            <ProjectSummary project={project} />
+          </Link>
+        );
+      })}
     </div>
   );
 };

@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { signUp } from "../../redux/store/actions/auth";
 
 class SignUp extends Component {
   constructor(props) {
@@ -13,18 +16,20 @@ class SignUp extends Component {
   }
 
   handleChange = e => {
-    console.log("TCL: SignUp -> e", e.target.id);
-    console.log("TCL: SignUp -> e.target.value", e.target.value);
     this.setState({
       [e.target.id]: e.target.value
     });
   };
   handleSubmit = e => {
     e.preventDefault();
-    console.log("TCL: SignUp ->  e", this.state);
+    this.props.signUp(this.state);
   };
 
   render() {
+    const { isLogin, authError, userSignUp } = this.props;
+    if (isLogin) {
+      return <Redirect to="/" />;
+    }
     return (
       <div className="container">
         <form onSubmit={e => this.handleSubmit(e)} className="white">
@@ -62,12 +67,27 @@ class SignUp extends Component {
             />
           </div>
           <div className="input-field">
-            <button className="btn pink lighten-1 z-depth-0">Login</button>
+            <button className="btn pink lighten-1 z-depth-0">Sign Up</button>
           </div>
+          {authError ? (
+            <div className="red-text center">
+              <p>{userSignUp}</p>
+            </div>
+          ) : null}
         </form>
       </div>
     );
   }
 }
 
-export default SignUp;
+const mapStateToProps = state => {
+  return {
+    isLogin: state.auth.login,
+    authError: state.auth.authError,
+    userSignUp: state.auth.signUp
+  };
+};
+const mapDispatchToProps = {
+  signUp
+};
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
