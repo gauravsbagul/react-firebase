@@ -1,30 +1,28 @@
 import firebase, { firestore } from '../../../config/firebaseConfig';
 
 export const signIn = credentials => {
-	console.log('TCL: credentials', credentials);
 	return dispatch =>
 		new Promise(async () => {
 			return firebase
 				.auth()
 				.signInWithEmailAndPassword(credentials.email, credentials.password)
 				.then(async response => {
-					console.log('TCL: response', response);
+
 					return dispatch({
 						type: 'LOGIN_SUCCESS',
 						payload: {
 							data: response
 						}
 					});
+
 				})
 				.catch(async error => {
-					console.log('TCL: error', error);
 					return dispatch({
 						type: 'LOGIN_ERROR',
 						payload: error
 					});
 				});
 		}).catch(err => {
-			console.log('TCL: err', err);
 			return dispatch({
 				type: 'LOGIN_ERROR',
 				payload: err
@@ -77,18 +75,31 @@ export const signUp = newUser => {
 };
 
 export const getCurrentUser = UID => {
-	console.log('TCL: UID', UID);
+	console.log("TCL: UID", UID)
 	let user = firebase.auth();
+	console.log("TCL: user", user)
 	return (dispatch, getState) => {
 		firestore
 			.collection('users')
-			.doc('AUW99mp0fyWUtYTallFR')
+			.doc()
 			.get()
 			.then(snapshot => {
-				console.log('TCL: snapshot', snapshot.data());
+				console.log("TCL: snapshot", snapshot.data())
+				console.log("TCL: snapshot", snapshot.id)
+				var currentUser = {
+					uid: snapshot.id,
+					...snapshot.data()
+				}
+				dispatch({
+					type: 'CURRENT_USER',
+					payload: currentUser
+				});
 			})
 			.catch(err => {
 				console.log('Error getting documents', err);
 			});
+
+
 	};
 };
+

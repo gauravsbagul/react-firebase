@@ -24,6 +24,7 @@ class CreateProject extends Component {
     e.preventDefault();
     // console.log("TCL: CreateProject ->  e", this.state);
     this.props.createProject(this.state);
+    this.props.history.push('/')
   };
 
   render() {

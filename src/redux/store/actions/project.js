@@ -1,7 +1,6 @@
 import { firestore } from '../../../config/firebaseConfig';
 
 export const createProject = project => {
-	console.log('TCL: createProject project', project);
 	return (dispatch, getState) => {
 		firestore
 			.collection('projects')
@@ -13,14 +12,12 @@ export const createProject = project => {
 				createdAt: new Date()
 			})
 			.then(response => {
-				console.log('TCL:createProject  response', response);
 				dispatch({
 					type: 'CREATE_PROJECT',
 					payload: project
 				});
 			})
 			.catch(error => {
-				console.log('TCL:createProject error', error);
 				dispatch({
 					type: 'CREATE_PROJECT_ERROR',
 					payload: error
@@ -38,7 +35,6 @@ export const getProjects = () => {
 				.then(async responseSnap => {
 					let data = [];
 					responseSnap.forEach(responseData => {
-						console.log('TCL: getProjects -> responseData', responseData);
 						data.push(responseData.data());
 					});
 					dispatch({
@@ -47,7 +43,6 @@ export const getProjects = () => {
 					});
 				})
 				.catch(responseSnapErr => {
-					console.log('TCL: getContact -> responseSnapErr', responseSnapErr);
 					dispatch({
 						type: 'GET_PROJECTS',
 						payload: []
