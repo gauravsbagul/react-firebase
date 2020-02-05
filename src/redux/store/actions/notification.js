@@ -1,25 +1,22 @@
 import { firestore } from '../../../config/firebaseConfig';
 
 export const getAllNotifications = () => {
-    console.log("TCL: getAllNotifications -> getAllNotifications")
     return dispatch =>
         new Promise(async () => {
             await firestore
                 .collection('notifications')
                 .get()
-                .then(responseSnap => {
-                    console.log("TCL: getAllNotifications -> responseSnap", responseSnap)
-                    // let data = [];
-                    // responseSnap.forEach(responseData => {
-                    //     data.push(responseData.data());
-                    // });
-                    dispatch({
+                .then(async responseSnap => {
+                    let data = [];
+                    responseSnap.forEach(responseData => {
+                        data.push(responseData.data());
+                    });
+                    await dispatch({
                         type: 'GET_NOTIFICATION',
-                        payload: responseSnap
+                        payload: data
                     });
                 })
                 .catch(responseSnapErr => {
-                    console.log("TCL: getAllNotifications -> responseSnapErr", responseSnapErr)
                     dispatch({
                         type: 'GET_NOTIFICATION',
                         payload: []

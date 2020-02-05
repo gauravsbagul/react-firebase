@@ -7,8 +7,7 @@ export const signIn = credentials => {
 				.auth()
 				.signInWithEmailAndPassword(credentials.email, credentials.password)
 				.then(async response => {
-
-					return dispatch({
+					dispatch({
 						type: 'LOGIN_SUCCESS',
 						payload: {
 							data: response
@@ -17,13 +16,13 @@ export const signIn = credentials => {
 
 				})
 				.catch(async error => {
-					return dispatch({
+					dispatch({
 						type: 'LOGIN_ERROR',
 						payload: error
 					});
 				});
 		}).catch(err => {
-			return dispatch({
+			dispatch({
 				type: 'LOGIN_ERROR',
 				payload: err
 			});

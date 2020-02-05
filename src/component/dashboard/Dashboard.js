@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
-import Notifications from './Notifications';
-import ProjectList from '../project/ProjectList';
-import { getProjects } from '../../redux/store/actions/project';
 import { connect } from 'react-redux';
-import { getCurrentUser } from '../../redux/store/actions/auth';
-import { firestoreConnect } from 'react-redux-firebase';
-import { getAllNotifications } from '../../redux/store/actions/notification';
-import { compose } from 'redux';
 import { Redirect } from 'react-router-dom';
+import { getCurrentUser } from '../../redux/store/actions/auth';
+import { getAllNotifications } from '../../redux/store/actions/notification';
+import { getProjects } from '../../redux/store/actions/project';
+import ProjectList from '../project/ProjectList';
+import Notifications from './Notifications';
 class Dashboard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			loading: false,
-			projects: null
+			projects: null,
+			notificationArray: []
 		};
 	}
 	static getDerivedStateFromProps(nextProps, prevState) {
 		let newState = prevState;
 
 		newState.projects = nextProps.getAllProjects;
+		newState.notificationArray = nextProps.notification
 
 		return newState === prevState ? prevState : newState;
 	}
@@ -29,7 +29,7 @@ class Dashboard extends Component {
 		this.props.getAllNotifications()
 	}
 	render() {
-		const { projects } = this.state;
+		const { projects, notificationArray } = this.state;
 		const { isLogin } = this.props;
 		if (!isLogin) {
 			return <Redirect to="/signin" />;
@@ -40,7 +40,7 @@ class Dashboard extends Component {
 					<div className="col s12 m6">
 						<ProjectList projects={projects} />
 					</div>
-					<div className="col s12 m5 offset-m1">{projects ? <Notifications /> : <span>loading...</span>}</div>
+					<div className="col s12 m5 offset-m1">{projects ? <Notifications notificationArray={notificationArray} /> : <span>loading...</span>}</div>
 				</div>
 			</div>
 		);
@@ -51,7 +51,7 @@ const mapStateToProps = state => {
 	return {
 		getAllProjects: state.project.getProjects,
 		isLogin: state.auth.login,
-		notification: state.notification.notificationReducer
+		notification: state.notification.getNotification
 	};
 };
 

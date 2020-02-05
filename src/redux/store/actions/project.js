@@ -34,10 +34,10 @@ export const getProjects = () => {
 				.get()
 				.then(async responseSnap => {
 					let data = [];
-					responseSnap.forEach(responseData => {
+					await responseSnap.forEach(responseData => {
 						data.push(responseData.data());
 					});
-					dispatch({
+					await dispatch({
 						type: 'GET_PROJECTS',
 						payload: data
 					});

@@ -1,10 +1,9 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
+import { NavLink } from "react-router-dom";
 import { signout } from "../../redux/store/actions/auth";
 const SignedInLinks = props => {
   console.log("TCL: SignedInLinks props", props);
-  const { login } = props;
   const initials = "GB";
 
   return (
