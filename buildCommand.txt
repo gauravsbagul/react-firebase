@@ -1,0 +1,3 @@
+1: npm run-script build
+2: move files/folders from build to dist folder
+3: firebase deploy --only hosting
